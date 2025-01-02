@@ -16,6 +16,7 @@
 		603DCE442D190BED00DDDB9E /* recureUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603DCE432D190BED00DDDB9E /* recureUITestsLaunchTests.swift */; };
 		603DCE512D19115200DDDB9E /* DailyReminders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603DCE502D19115200DDDB9E /* DailyReminders.swift */; };
 		603DCE542D1911C200DDDB9E /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603DCE532D1911C200DDDB9E /* Theme.swift */; };
+		6063404F2D266BCD00DA94E1 /* ReminderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6063404E2D266BC500DA94E1 /* ReminderListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		603DCE432D190BED00DDDB9E /* recureUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = recureUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		603DCE502D19115200DDDB9E /* DailyReminders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyReminders.swift; sourceTree = "<group>"; };
 		603DCE532D1911C200DDDB9E /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		6063404E2D266BC500DA94E1 /* ReminderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +137,7 @@
 		603DCE522D19119D00DDDB9E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6063404E2D266BC500DA94E1 /* ReminderListView.swift */,
 				603DCE502D19115200DDDB9E /* DailyReminders.swift */,
 				603DCE532D1911C200DDDB9E /* Theme.swift */,
 			);
@@ -205,7 +208,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1520;
-				LastUpgradeCheck = 1520;
+				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					603DCE222D190BE900DDDB9E = {
 						CreatedOnToolsVersion = 15.2;
@@ -273,6 +276,7 @@
 			files = (
 				603DCE292D190BE900DDDB9E /* Reminder.swift in Sources */,
 				603DCE542D1911C200DDDB9E /* Theme.swift in Sources */,
+				6063404F2D266BCD00DA94E1 /* ReminderListView.swift in Sources */,
 				603DCE272D190BE900DDDB9E /* recureApp.swift in Sources */,
 				603DCE512D19115200DDDB9E /* DailyReminders.swift in Sources */,
 			);
@@ -491,7 +495,6 @@
 		603DCE4B2D190BED00DDDB9E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -511,7 +514,6 @@
 		603DCE4C2D190BED00DDDB9E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -531,7 +533,6 @@
 		603DCE4E2D190BED00DDDB9E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FC6Z3TU464;
@@ -549,7 +550,6 @@
 		603DCE4F2D190BED00DDDB9E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FC6Z3TU464;

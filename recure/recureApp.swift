@@ -11,7 +11,6 @@ import SwiftUI
 struct recureApp: App {
     var body: some Scene {
         WindowGroup {
-            Reminder()
         }
     }
 }
