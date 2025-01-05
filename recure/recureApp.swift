@@ -11,6 +11,7 @@ import SwiftUI
 struct recureApp: App {
     var body: some Scene {
         WindowGroup {
+            ReminderListView(reminders: Reminder.sampleData)
         }
     }
 }
