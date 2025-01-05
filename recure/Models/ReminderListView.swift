@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct ReminderListView: View {
-    let reminders: [Reminder]
+    @Binding var reminders: [Reminder]
     
     var body: some View {
         NavigationStack {
-            List(reminders, id: \.title) { reminder in
-                NavigationLink(destination: EditReminder()) {
+            List($reminders, id: \.title) { $reminder in
+                NavigationLink(destination: EditReminder(reminder: $reminder)) {
                     ReminderCard(reminder: reminder)
                 }
                 .listRowBackground(reminder.theme.mainColor)
@@ -32,6 +32,6 @@ struct ReminderListView: View {
 struct ReminderListView_Previews: PreviewProvider {
     static var reminders = Reminder.sampleData
     static var previews: some View {
-        ReminderListView(reminders: reminders)
+        ReminderListView(reminders: .constant(reminders))
     }
 }

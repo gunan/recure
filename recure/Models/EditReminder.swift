@@ -9,7 +9,8 @@ import SwiftUI
 
 
 struct EditReminder : View {
-    @State private var reminder: Reminder = Reminder.emptyReminder
+    @Binding var reminder: Reminder
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         Form {
@@ -26,7 +27,14 @@ struct EditReminder : View {
                         }
                     }
                 }
-
+                    Button("Done") {
+                        dismiss()
+                    }
+                    Spacer()
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                
             }
         }
     }
@@ -35,7 +43,7 @@ struct EditReminder : View {
 struct EditReminder_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            EditReminder()
+            EditReminder(reminder: .constant(Reminder.sampleData[0]))
         }
     }
 }

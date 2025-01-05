@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct recureApp: App {
+    @State private var reminders = Reminder.sampleData
+    
     var body: some Scene {
         WindowGroup {
-            ReminderListView(reminders: Reminder.sampleData)
+            ReminderListView(reminders: $reminders)
         }
     }
 }
