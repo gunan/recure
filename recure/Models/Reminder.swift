@@ -11,12 +11,22 @@ struct Reminder : Identifiable {
     var id: UUID
     var title: String
     var alertDate: Date
+    var cadence: Cadence
     var dueDate: Date
     var description: String
     var dismissed: Bool
     var theme: Theme
     
-    init(id: UUID = UUID(), title: String, alertDate: Date, dueDate: Date, description: String, dismissed: Bool, theme: Theme) {
+    enum Cadence: String, CaseIterable, Identifiable {
+        case Daily
+        case Weekly
+        case Monthly
+        case Quarterly
+        case Yearly
+        var id: Self { self }
+    }
+    
+    init(id: UUID = UUID(), title: String, alertDate: Date, cadence: Cadence, dueDate: Date, description: String, dismissed: Bool, theme: Theme) {
         self.id = id
         self.title = title
         self.alertDate = alertDate
@@ -24,13 +34,17 @@ struct Reminder : Identifiable {
         self.description = description
         self.dismissed = dismissed
         self.theme = theme
+        self.cadence = cadence
     }
+    
+    
 }
 
 extension Reminder {
     static let sampleData: [Reminder] = [
         Reminder(title: "Take Medication",
                  alertDate: Date(timeIntervalSinceNow: 0),
+                 cadence: Cadence.Daily,
                  dueDate: Date(timeIntervalSinceNow: 100000),
                  description: "Take 1 tablet aspirin",
                  dismissed: false,
@@ -38,10 +52,22 @@ extension Reminder {
                 ),
         Reminder(title: "Budget",
                  alertDate: Date(timeIntervalSinceNow: 0),
+                 cadence: Cadence.Daily,
                  dueDate: Date(timeIntervalSinceNow: 100000),
                  description: "Review cc transactions",
                  dismissed: false,
                  theme: .orange
                 )
     ]
+    
+    static var emptyReminder: Reminder {
+        Reminder(title: "",
+                 alertDate: Date.now,
+                 cadence: Cadence.Daily,
+                 dueDate: Date.now,
+                 description: "",
+                 dismissed: false,
+                 theme: .sky)
+    }
+    
 }

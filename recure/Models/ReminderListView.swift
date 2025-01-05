@@ -12,7 +12,7 @@ struct ReminderListView: View {
     
     var body: some View {
         List(reminders, id: \.title) { reminder in
-            NavigationLink(destination: EditReminder(reminder: reminder)) {
+            NavigationLink(destination: EditReminder()) {
                 ReminderCard(reminder: reminder)
             }
             .listRowBackground(reminder.theme.mainColor)

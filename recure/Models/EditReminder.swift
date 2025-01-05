@@ -9,17 +9,24 @@ import SwiftUI
 
 
 struct EditReminder : View {
-    let reminder: Reminder
+    @State private var reminder: Reminder = Reminder.emptyReminder
     
     var body: some View {
-        List {
-            Section(header: Text(reminder.title)) {
-                TextField(text: $reminder.title)
-                HStack {
-                    Label("Length", systemImage: "clock")
-                    Spacer()
-                    Text(reminder.description)
+        Form {
+            Section(header: Text("Edit reminder")) {
+                TextField(
+                    "Title", text: $reminder.title)
+                TextField(
+                    "Description", text: $reminder.description)
+                DatePicker("Start Date", selection: $reminder.alertDate)
+                List {
+                    Picker("Choose Reminder Cadence", selection: $reminder.cadence) {
+                        ForEach(Reminder.Cadence.allCases) { c in
+                            Text(c.rawValue)
+                        }
+                    }
                 }
+
             }
         }
     }
@@ -27,6 +34,6 @@ struct EditReminder : View {
 
 struct EditReminder_Previews: PreviewProvider {
     static var previews: some View {
-        EditReminder(reminder: Reminder.sampleData[0])
+        EditReminder()
     }
 }
