@@ -11,16 +11,18 @@ struct ReminderListView: View {
     let reminders: [Reminder]
     
     var body: some View {
-        List(reminders, id: \.title) { reminder in
-            NavigationLink(destination: EditReminder()) {
-                ReminderCard(reminder: reminder)
+        NavigationStack {
+            List(reminders, id: \.title) { reminder in
+                NavigationLink(destination: EditReminder()) {
+                    ReminderCard(reminder: reminder)
+                }
+                .listRowBackground(reminder.theme.mainColor)
             }
-            .listRowBackground(reminder.theme.mainColor)
-        }
-        .navigationTitle("Reminders")
-        .toolbar {
-            Button(action: {}) {
-                Image(systemName: "plus")
+            .navigationTitle("Reminders")
+            .toolbar {
+                Button(action: {}) {
+                    Image(systemName: "plus")
+                }
             }
         }
     }

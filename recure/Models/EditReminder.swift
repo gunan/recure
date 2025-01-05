@@ -34,6 +34,8 @@ struct EditReminder : View {
 
 struct EditReminder_Previews: PreviewProvider {
     static var previews: some View {
-        EditReminder()
+        NavigationStack {
+            EditReminder()
+        }
     }
 }
