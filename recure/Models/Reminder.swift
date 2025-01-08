@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Reminder : Identifiable {
+struct Reminder : Identifiable, Equatable {
     var id: UUID
     var title: String
     var alertDate: Date
@@ -36,7 +36,6 @@ struct Reminder : Identifiable {
         self.theme = theme
         self.cadence = cadence
     }
-    
     
 }
 
@@ -69,5 +68,4 @@ extension Reminder {
                  dismissed: false,
                  theme: .sky)
     }
-    
 }
