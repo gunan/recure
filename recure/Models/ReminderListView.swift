@@ -20,9 +20,12 @@ struct ReminderListView: View {
             }
             .navigationTitle("Reminders")
             .toolbar {
-                Button(action: {}) {
-                    Image(systemName: "plus")
-                }
+                NavigationLink(
+                    destination: EditReminder(
+                        reminders: $reminders
+                    )) {
+                        Button("plus", systemImage: "plus", action: {})
+                    }
             }
         }
     }

@@ -10,12 +10,23 @@ import SwiftUI
 
 struct EditReminder : View {
     @Binding var reminder: Reminder
+    @Binding var reminders: [Reminder]
     @Environment(\.dismiss) private var dismiss
     @State private var editingReminder: Reminder
+    private var creatingNewReminder: Bool
+    
     
     init(reminder: Binding<Reminder>) {
         self._reminder = reminder
         self._editingReminder = State(initialValue: reminder.wrappedValue)
+        self._reminders = .constant([])
+        self.creatingNewReminder = false
+    }
+    init(reminders: Binding<[Reminder]>) {
+        self._reminder = .constant(Reminder.emptyReminder)
+        self._editingReminder = State(initialValue: Reminder.emptyReminder)
+        self._reminders = reminders
+        self.creatingNewReminder = true
     }
     
     func recalculateDueDate() {
@@ -63,7 +74,11 @@ struct EditReminder : View {
                 HStack {
                     Spacer()
                     Button("Done") {
-                        reminder = editingReminder
+                        if self.creatingNewReminder {
+                            reminders.append(editingReminder)
+                        } else {
+                            reminder = editingReminder
+                        }
                         dismiss()
                     }.buttonStyle(.borderedProminent).tint(.green)
                     Spacer()
@@ -81,7 +96,9 @@ struct EditReminder : View {
 struct EditReminder_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            EditReminder(reminder: .constant(Reminder.sampleData[0]))
+            EditReminder(
+                reminder: .constant(Reminder.sampleData[0])
+            )
         }
     }
 }

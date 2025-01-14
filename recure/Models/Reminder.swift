@@ -37,6 +37,17 @@ struct Reminder : Identifiable, Equatable {
         self.cadence = cadence
     }
     
+    init(reminder: Reminder) {
+        self.id = reminder.id
+        self.title = reminder.title
+        self.alertDate = reminder.alertDate
+        self.dueDate = reminder.dueDate
+        self.description = reminder.description
+        self.dismissed = reminder.dismissed
+        self.theme = reminder.theme
+        self.cadence = reminder.cadence
+    }
+    
 }
 
 extension Reminder {
