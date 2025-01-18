@@ -29,31 +29,6 @@ struct EditReminder : View {
         self.creatingNewReminder = true
     }
     
-    func recalculateDueDate() {
-        switch editingReminder.cadence {
-        case .Daily:
-            editingReminder.dueDate = Calendar.current.date(
-                byAdding: .day, value: 1, to: editingReminder.alertDate
-            )!
-        case .Weekly:
-            editingReminder.dueDate = Calendar.current.date(
-                byAdding: .day, value: 7, to: editingReminder.alertDate
-            )!
-        case .Monthly:
-            editingReminder.dueDate = Calendar.current.date(
-                byAdding: .month, value: 1, to: editingReminder.alertDate
-            )!
-        case .Quarterly:
-            editingReminder.dueDate = Calendar.current.date(
-                byAdding: .month, value: 3, to: editingReminder.alertDate
-            )!
-        case .Yearly:
-            editingReminder.dueDate = Calendar.current.date(
-                byAdding: .year, value: 1, to: editingReminder.alertDate
-            )!
-        }
-    }
-    
     var body: some View {
         Form {
             Section(header: Text("Edit reminder")) {
