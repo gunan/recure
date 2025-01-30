@@ -10,11 +10,16 @@ import SwiftUI
 struct ToDoListView: View {
     @Binding var alerts: [Alert]
     
+    func removeRows(at offsets: IndexSet) {
+        alerts.remove(atOffsets: offsets)
+    }
+    
     var body: some View {
         NavigationStack {
-            List($alerts, id: \.id) { $alert in
-                ToDoItemCard(alert: alert)
-                .listRowBackground(alert.reminder.theme.mainColor)
+            List {
+                ForEach($alerts, id: \.id) { $alert in
+                    ToDoItemCard(alert: alert)
+                }.onDelete(perform: removeRows)
             }
             .navigationTitle("Alerts")
             .toolbar {
