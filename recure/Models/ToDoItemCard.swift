@@ -11,12 +11,12 @@ struct ToDoItemCard: View {
     let alert: Alert
     var body: some View {
         VStack(alignment: .leading) {
-            Text(alert.reminder.title).font(.title)
             HStack() {
+                Text("Triggered at: \(alert.reminder.dueDate, format:.dateTime.day().month().hour().minute())")
+                    .font(.caption)
                 Spacer()
-                Label("\(alert.reminder.alertDate, format: .dateTime.month().day())", systemImage: "bell").font(.caption)
-                Label("\(alert.reminder.dueDate, format: .dateTime.month().day())", systemImage: "timer").font(.caption)
             }
+            Text(alert.reminder.title).font(.title)
             Text(alert.reminder.description)
         }
         .padding()

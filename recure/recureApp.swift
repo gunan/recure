@@ -10,10 +10,11 @@ import SwiftUI
 @main
 struct recureApp: App {
     @State private var reminders = Reminder.sampleData
+    @State private var alerts = Alert.sampleData
     
     var body: some Scene {
         WindowGroup {
-            ReminderListView(reminders: $reminders)
+            MergedView(alerts: $alerts, reminders: $reminders)
         }
     }
 }
