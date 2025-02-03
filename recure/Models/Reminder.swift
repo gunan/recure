@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Reminder : Identifiable, Equatable {
+struct Reminder : Identifiable, Equatable, Codable {
     var id: UUID
     var title: String
     var alertDate: Date
@@ -17,7 +17,7 @@ struct Reminder : Identifiable, Equatable {
     var dismissed: Bool
     var theme: Theme
     
-    enum Cadence: String, CaseIterable, Identifiable {
+    enum Cadence: String, CaseIterable, Identifiable, Codable {
         case Daily
         case Weekly
         case Monthly

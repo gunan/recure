@@ -34,7 +34,9 @@ struct ReminderListView: View {
 
 struct ReminderListView_Previews: PreviewProvider {
     static var reminders = Reminder.sampleData
+    static var emptys = Array<Reminder>()
     static var previews: some View {
-        ReminderListView(reminders: .constant(reminders))
+        // ReminderListView(reminders: .constant(reminders))
+        ReminderListView(reminders: .constant(emptys))
     }
 }

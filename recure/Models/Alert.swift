@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Alert : Identifiable, Equatable {
+struct Alert : Identifiable, Equatable, Codable {
     var id: UUID
     var reminder: Reminder
     var alertDate: Date
