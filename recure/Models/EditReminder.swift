@@ -49,6 +49,13 @@ struct EditReminder : View {
                 HStack {
                     Spacer()
                     Button("Done") {
+                        editingReminder.nextAlertDate = editingReminder.startDate
+                        // Find the first date we need to alert
+                        while Date.now > editingReminder.nextAlertDate {
+                            editingReminder.recalculateDueDate()
+                        }
+                        
+                        // Decide if we need to create a new reminder or editing an existing one.
                         if self.creatingNewReminder {
                             reminders.append(editingReminder)
                         } else {

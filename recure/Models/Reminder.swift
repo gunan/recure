@@ -48,6 +48,31 @@ struct Reminder : Identifiable, Equatable, Codable {
         self.cadence = reminder.cadence
     }
     
+    public mutating func recalculateDueDate() {
+        switch self.cadence {
+        case .Daily:
+            self.nextAlertDate = Calendar.current.date(
+                byAdding: .day, value: 1, to: self.nextAlertDate
+            )!
+        case .Weekly:
+            self.nextAlertDate = Calendar.current.date(
+                byAdding: .day, value: 7, to: self.nextAlertDate
+            )!
+        case .Monthly:
+            self.nextAlertDate = Calendar.current.date(
+                byAdding: .month, value: 1, to: self.nextAlertDate
+            )!
+        case .Quarterly:
+            self.nextAlertDate = Calendar.current.date(
+                byAdding: .month, value: 3, to: self.nextAlertDate
+            )!
+        case .Yearly:
+            self.nextAlertDate = Calendar.current.date(
+                byAdding: .year, value: 1, to: self.nextAlertDate
+            )!
+        }
+    }
+    
 }
 
 extension Reminder {

@@ -12,7 +12,7 @@ struct ToDoItemCard: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack() {
-                Text("Triggered at: \(alert.reminder.dueDate, format:.dateTime.day().month().hour().minute())")
+                Text("Triggered at: \(alert.reminder.nextAlertDate, format:.dateTime.day().month().hour().minute())")
                     .font(.caption)
                 Spacer()
             }

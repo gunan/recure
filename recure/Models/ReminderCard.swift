@@ -13,9 +13,9 @@ struct ReminderCard: View {
         VStack(alignment: .leading) {
             Text(reminder.title).font(.title)
             HStack() {
-                Label("\(reminder.alertDate, format: .dateTime.month().day())", systemImage: "timer")
+                Label("\(reminder.startDate, format: .dateTime.month().day())", systemImage: "timer")
                 Spacer()
-                Label("\(reminder.dueDate, format: .dateTime.month().day())", systemImage: "bell").padding(.trailing, 20)
+                Label("\(reminder.nextAlertDate, format: .dateTime.month().day())", systemImage: "bell").padding(.trailing, 20)
                 
             }.font(.caption)
             Text(reminder.description)
