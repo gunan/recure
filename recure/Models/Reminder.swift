@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import UserNotifications
 
 struct Reminder : Identifiable, Equatable, Codable {
     var id: UUID
     var title: String
     var startDate: Date
     var nextAlertDate: Date
+    // TODO: convert alert dates to an array.
     var description: String
     var theme: Theme
     var isValid: Bool = false
@@ -123,6 +125,24 @@ struct Reminder : Identifiable, Equatable, Codable {
             self.repeatCount = nil
             self.finalDate = nil
         }
+    }
+    
+    public mutating func scheduleReminders() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [self.id.uuidString])
+        
+        let content = UNMutableNotificationContent()
+        content.title = self.title
+        content.body = self.description
+        
+        content.sound = UNNotificationSound.default
+        
+        let dateComps: DateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: self.nextAlertDate)
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComps, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: self.id.uuidString, content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request)
     }
     
 }
