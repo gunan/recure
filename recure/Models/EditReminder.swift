@@ -14,7 +14,7 @@ struct EditReminder : View {
     @Environment(\.dismiss) private var dismiss
     @State private var editingReminder: Reminder
     private var creatingNewReminder: Bool
-    
+    @State private var errorMessage: String? = nil
     
     init(reminder: Binding<Reminder>) {
         self._reminder = reminder
@@ -49,25 +49,34 @@ struct EditReminder : View {
                 HStack {
                     Spacer()
                     Button("Done") {
-                        editingReminder.nextAlertDate = editingReminder.startDate
-                        // Find the first date we need to alert
-                        while Date.now > editingReminder.nextAlertDate {
-                            editingReminder.recalculateDueDate()
-                        }
-                        
-                        // Decide if we need to create a new reminder or editing an existing one.
-                        if self.creatingNewReminder {
-                            reminders.append(editingReminder)
+                        editingReminder.normalizeReminder()
+                        if editingReminder.isValid {
+                            // Decide if we need to create a new reminder or editing an existing one.
+                            if self.creatingNewReminder {
+                                reminders.append(editingReminder)
+                            } else {
+                                reminder = editingReminder
+                            }
+                            dismiss()
                         } else {
-                            reminder = editingReminder
+                            self.errorMessage = "No future alert date can be computed."
                         }
-                        dismiss()
                     }.buttonStyle(.borderedProminent).tint(.green)
                     Spacer()
                     Button("Cancel", role: .cancel) {
                         dismiss()
                     }.buttonStyle(.borderedProminent).tint(.red)
                     Spacer()
+                }
+                if self.errorMessage != nil && self.errorMessage != "" {
+                    HStack {
+                        Spacer()
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundColor(.red)
+                        Text(self.errorMessage!)
+                            .foregroundColor(.red)
+                        Spacer()
+                    }
                 }
                 
             }
