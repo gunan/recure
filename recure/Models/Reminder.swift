@@ -10,9 +10,9 @@ import Foundation
 struct Reminder : Identifiable, Equatable, Codable {
     var id: UUID
     var title: String
-    var alertDate: Date
+    var startDate: Date
     var cadence: Cadence
-    var dueDate: Date
+    var nextAlertDate: Date
     var description: String
     var dismissed: Bool
     var theme: Theme
@@ -26,11 +26,11 @@ struct Reminder : Identifiable, Equatable, Codable {
         var id: Self { self }
     }
     
-    init(id: UUID = UUID(), title: String, alertDate: Date, cadence: Cadence, dueDate: Date, description: String, dismissed: Bool, theme: Theme) {
+    init(id: UUID = UUID(), title: String, startDate: Date, cadence: Cadence, nextAlertDate: Date, description: String, dismissed: Bool, theme: Theme) {
         self.id = id
         self.title = title
-        self.alertDate = alertDate
-        self.dueDate = dueDate
+        self.startDate = startDate
+        self.nextAlertDate = nextAlertDate
         self.description = description
         self.dismissed = dismissed
         self.theme = theme
@@ -40,8 +40,8 @@ struct Reminder : Identifiable, Equatable, Codable {
     init(reminder: Reminder) {
         self.id = reminder.id
         self.title = reminder.title
-        self.alertDate = reminder.alertDate
-        self.dueDate = reminder.dueDate
+        self.startDate = reminder.startDate
+        self.nextAlertDate = reminder.nextAlertDate
         self.description = reminder.description
         self.dismissed = reminder.dismissed
         self.theme = reminder.theme
@@ -53,17 +53,17 @@ struct Reminder : Identifiable, Equatable, Codable {
 extension Reminder {
     static let sampleData: [Reminder] = [
         Reminder(title: "Take Medication",
-                 alertDate: Date(timeIntervalSinceNow: 0),
+                 startDate: Date(timeIntervalSinceNow: 0),
                  cadence: Cadence.Daily,
-                 dueDate: Date(timeIntervalSinceNow: 100000),
+                 nextAlertDate: Date(timeIntervalSinceNow: 100000),
                  description: "Take 1 tablet aspirin",
                  dismissed: false,
                  theme: .yellow
                 ),
         Reminder(title: "Budget",
-                 alertDate: Date(timeIntervalSinceNow: 0),
+                 startDate: Date(timeIntervalSinceNow: 0),
                  cadence: Cadence.Daily,
-                 dueDate: Date(timeIntervalSinceNow: 100000),
+                 nextAlertDate: Date(timeIntervalSinceNow: 100000),
                  description: "Review cc transactions",
                  dismissed: false,
                  theme: .orange
@@ -72,9 +72,9 @@ extension Reminder {
     
     static var emptyReminder: Reminder {
         Reminder(title: "",
-                 alertDate: Date.now,
+                 startDate: Date.now,
                  cadence: Cadence.Daily,
-                 dueDate: Date.now,
+                 nextAlertDate: Date.now,
                  description: "",
                  dismissed: false,
                  theme: .sky)

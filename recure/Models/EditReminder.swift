@@ -36,7 +36,7 @@ struct EditReminder : View {
                     "Title", text: $editingReminder.title)
                 TextField(
                     "Description", text: $editingReminder.description)
-                DatePicker("Start Date", selection: $editingReminder.alertDate,
+                DatePicker("Start Date", selection: $editingReminder.startDate,
                            in: Date.now...Date.distantFuture)
                 List {
                     Picker("Choose Reminder Cadence", selection: $editingReminder.cadence) {
