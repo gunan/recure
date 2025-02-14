@@ -31,6 +31,13 @@ struct recureApp: App {
                 do {
                     try await reminder_store.load()
                     try await alert_store.load()
+                    let center = UNUserNotificationCenter.current()
+                    do {
+                        try await center.requestAuthorization(options: [.alert, .sound, .badge])
+                    } catch {
+                        // Handle the error here.
+                        fatalError(error.localizedDescription)
+                    }
                 } catch {
                     fatalError(error.localizedDescription)
                 }
