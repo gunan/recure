@@ -17,7 +17,7 @@ struct MergedView: View {
     var body: some View {
         NavigationStack {
             TabView {
-                ToDoListView(alerts: $alerts)
+                AlertListView(alerts: $alerts)
                     .tabItem {
                         Label("Alerts", systemImage: "bell")
                     }

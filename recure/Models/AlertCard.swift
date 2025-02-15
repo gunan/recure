@@ -1,5 +1,5 @@
 //
-//  ToDoItemCard.swift
+//  AlertCard.swift
 //  recure
 //
 //  Created by Günhan Gülsoy on 1/17/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ToDoItemCard: View {
+struct AlertCard: View {
     let alert: Alert
     var body: some View {
         VStack(alignment: .leading) {
@@ -25,10 +25,10 @@ struct ToDoItemCard: View {
 }
 
 
-struct ToDoItemCard_Previews: PreviewProvider {
+struct AlertCard_Previews: PreviewProvider {
     static var alert = Alert.sampleData[0]
     static var previews: some View {
-        ToDoItemCard(alert: alert)
+        AlertCard(alert: alert)
             // .background(reminder.theme.mainColor)
             .background(alert.reminder.theme.mainColor)
     }

@@ -1,5 +1,5 @@
 //
-//  ToDoListView.swift
+//  AlertListView.swift
 //  recure
 //
 //  Created by Günhan Gülsoy on 1/18/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ToDoListView: View {
+struct AlertListView: View {
     @Binding var alerts: [Alert]
     
     func removeRows(at offsets: IndexSet) {
@@ -18,7 +18,7 @@ struct ToDoListView: View {
         NavigationStack {
             List {
                 ForEach($alerts, id: \.id) { $alert in
-                    ToDoItemCard(alert: alert)
+                    AlertCard(alert: alert)
                 }.onDelete(perform: removeRows)
             }
             .navigationTitle("Alerts")
@@ -32,6 +32,6 @@ struct ToDoListView: View {
 struct ToDoListView_Previews: PreviewProvider {
     static var alerts = Alert.sampleData
     static var previews: some View {
-        ToDoListView(alerts: .constant(alerts))
+        AlertListView(alerts: .constant(alerts))
     }
 }
