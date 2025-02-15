@@ -16,6 +16,10 @@ struct EditReminder : View {
     private var creatingNewReminder: Bool
     @State private var errorMessage: String? = nil
     
+    @State private var selectRepetitionCount: Bool = false
+    @State private var untilDate: Date = Date()
+    @State private var repetitionCount: Int = 0
+    
     init(reminder: Binding<Reminder>) {
         self._reminder = reminder
         self._editingReminder = State(initialValue: reminder.wrappedValue)
@@ -38,17 +42,45 @@ struct EditReminder : View {
                     "Description", text: $editingReminder.description)
                 DatePicker("Start Date", selection: $editingReminder.startDate,
                            in: Date.now...Date.distantFuture)
-                List {
-                    Picker("Choose Reminder Cadence", selection: $editingReminder.cadence) {
-                        ForEach(Reminder.Cadence.allCases) { c in
-                            Text(c.rawValue)
+                Toggle("Repeat?", isOn: $editingReminder.isRepeating)
+                
+                if (editingReminder.isRepeating) {
+                    List {
+                        Picker("Choose Reminder Cadence", selection: $editingReminder.cadence) {
+                            ForEach(Reminder.Cadence.allCases) { c in
+                                Text(c.rawValue)
+                            }
                         }
+                    }.disabled(!editingReminder.isRepeating)
+                    Picker("Repeat until", selection: $selectRepetitionCount) {
+                        Text("Date").tag(false)
+                        Text("Times").tag(true)
+                    }.pickerStyle(.segmented)
+                    
+                    if selectRepetitionCount {
+                        HStack {
+                            Text("Count")
+                            Text("\(repetitionCount)")
+                            Stepper("", value: $repetitionCount, in: 1...100)
+                        }
+                    } else {
+                        DatePicker("End date",
+                                   selection: $untilDate,
+                                   in: editingReminder.startDate...Date.distantFuture)
                     }
                 }
-                Spacer()
                 HStack {
                     Spacer()
                     Button("Done") {
+                        // Because of the optional business, resolve indirection here.
+                        if (editingReminder.isRepeating) {
+                            if selectRepetitionCount {
+                                editingReminder.repeatCount = repetitionCount
+                            } else {
+                                editingReminder.finalDate = untilDate
+                            }
+                        }
+                        
                         editingReminder.normalizeReminder()
                         if editingReminder.isValid {
                             // Decide if we need to create a new reminder or editing an existing one.
