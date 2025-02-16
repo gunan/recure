@@ -12,8 +12,7 @@ struct Reminder : Identifiable, Equatable, Codable {
     var id: UUID
     var title: String
     var startDate: Date
-    var nextAlertDate: Date
-    // TODO: convert alert dates to an array.
+    var alertDates: [Date] = []
     var description: String
     var theme: Theme
     var isValid: Bool = false
@@ -29,6 +28,22 @@ struct Reminder : Identifiable, Equatable, Codable {
         case Quarterly
         case Yearly
         var id: Self { self }
+        
+        public func toDateComponents() -> DateComponents {
+            switch self {
+            case .Daily:
+                return DateComponents(day:1)
+            case .Weekly:
+                return DateComponents(weekOfYear:1)
+            case .Monthly:
+                return DateComponents(month:1)
+            case .Quarterly:
+                return DateComponents(month:3)
+            case .Yearly:
+                return DateComponents(year:1)
+            }
+            
+        }
     }
     
     init(id: UUID = UUID(),
@@ -44,7 +59,7 @@ struct Reminder : Identifiable, Equatable, Codable {
         self.id = id
         self.title = title
         self.startDate = startDate
-        self.nextAlertDate = nextAlertDate
+        self.alertDates.append(nextAlertDate)
         self.description = description
         self.theme = theme
         self.cadence = cadence
@@ -61,7 +76,7 @@ struct Reminder : Identifiable, Equatable, Codable {
         self.id = reminder.id
         self.title = reminder.title
         self.startDate = reminder.startDate
-        self.nextAlertDate = reminder.nextAlertDate
+        self.alertDates = reminder.alertDates
         self.description = reminder.description
         self.theme = reminder.theme
         self.isValid = reminder.isValid
@@ -72,77 +87,96 @@ struct Reminder : Identifiable, Equatable, Codable {
         }
     }
     
-    public mutating func recalculateDueDate() {
-        if  (self.isRepeating &&
-             ((self.repeatCount ?? 0) > 0 ||
-              self.finalDate != nil)) {
-            switch self.cadence {
-            case .Daily:
-                self.nextAlertDate = Calendar.current.date(
-                    byAdding: .day, value: 1, to: self.nextAlertDate
-                )!
-            case .Weekly:
-                self.nextAlertDate = Calendar.current.date(
-                    byAdding: .day, value: 7, to: self.nextAlertDate
-                )!
-            case .Monthly:
-                self.nextAlertDate = Calendar.current.date(
-                    byAdding: .month, value: 1, to: self.nextAlertDate
-                )!
-            case .Quarterly:
-                self.nextAlertDate = Calendar.current.date(
-                    byAdding: .month, value: 3, to: self.nextAlertDate
-                )!
-            case .Yearly:
-                self.nextAlertDate = Calendar.current.date(
-                    byAdding: .year, value: 1, to: self.nextAlertDate
-                )!
-            case .none:
-                print("Invalid cadence!")
-            }
-            
-            if self.repeatCount != nil {
-                self.repeatCount! -= 1
-            }
-            
-            if (((self.finalDate ?? self.nextAlertDate) < self.nextAlertDate) ||
-                (self.repeatCount ?? 0) < 0) {
+    public mutating func recalculateDueDates() {
+        // In case we exhausted all reminders, let's still save the last one.
+        var lastReminderDate: Date = self.alertDates.max() ?? self.startDate
+        
+        // First clear all past dates
+        // These should not have pending notifications as well, so safe to just delete.
+        self.alertDates.removeAll(where: { $0 < Date.now })
+        
+        
+        // If we have more than 30 alerts scheduled, meh.
+        if self.alertDates.count > 30 {
+            return
+        }
+        
+        // Now let's see if we are still supposed to repeat stuff
+        if self.isRepeating {
+            // Make sure we have a cadence to work with
+            if self.cadence == nil {
                 self.isValid = false
+                self.isValid = false
+                print("Invalid cadence!")
+                return
             }
+            
+            // Let's see if we have repeat count.
+            if (self.repeatCount ?? 0) > 0 {
+                while self.repeatCount! > 0 && self.alertDates.count <= 30 {
+                    lastReminderDate = Calendar.current.date(byAdding: self.cadence!.toDateComponents(), to: lastReminderDate)!
+                    self.repeatCount! -= 1
+                    // Let's still check if this is a valid date for a reminder.
+                    if lastReminderDate > Date.now {
+                        self.alertDates.append(lastReminderDate)
+                    }
+                }
+            } else if self.finalDate != nil {
+                while lastReminderDate < self.finalDate! && self.alertDates.count <= 30 {
+                    lastReminderDate = Calendar.current.date(byAdding: self.cadence!.toDateComponents(), to: lastReminderDate)!
+                    if lastReminderDate > Date.now {
+                        self.alertDates.append(lastReminderDate)
+                    }
+                }
+            }
+        }
+        
+        if self.alertDates.isEmpty {
+            // This means we have no more use for this reminder.
+            self.isValid = false
         }
     }
     
     public mutating func normalizeReminder() {
-        self.nextAlertDate = self.startDate
-        
-        // Find the first date we need to alert
-        while Date.now > self.nextAlertDate || self.isRepeating == false {
-            self.recalculateDueDate()
-        }
-        
-        if self.isRepeating == false {
+        // Check validity of repetition variables.
+        if self.isRepeating {
+            // repeatCount is considered first
+            if (self.repeatCount ?? 0) > 0 {
+                self.finalDate = nil
+            } else if self.finalDate != nil {
+                self.repeatCount = 0
+            } else {
+                self.isRepeating = false
+            }
+        } else {
             self.cadence = nil
             self.repeatCount = nil
             self.finalDate = nil
         }
+        
+        // Then compute some amount of due dates.
+        self.recalculateDueDates()
     }
     
     public mutating func scheduleReminders() {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [self.id.uuidString])
         
-        let content = UNMutableNotificationContent()
-        content.title = self.title
-        content.body = self.description
-        
-        content.sound = UNNotificationSound.default
-        
-        let dateComps: DateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: self.nextAlertDate)
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComps, repeats: false)
-        
-        let request = UNNotificationRequest(identifier: self.id.uuidString, content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request)
+        // TODO move this to alert class.
+        self.alertDates.forEach { date in
+            let content = UNMutableNotificationContent()
+            content.title = self.title
+            content.body = self.description
+            
+            content.sound = UNNotificationSound.default
+            
+            let dateComps: DateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
+            
+            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComps, repeats: false)
+            
+            let request = UNNotificationRequest(identifier: self.id.uuidString, content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request)
+        }
     }
     
 }

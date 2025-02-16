@@ -18,7 +18,7 @@ struct Alert : Identifiable, Equatable, Codable {
     init(id: UUID = UUID(), reminder: Reminder) {
         self.id = id
         self.reminder = reminder
-        self.alertDate = reminder.nextAlertDate
+        self.alertDate = reminder.alertDates.first ?? reminder.startDate
         self.dismissed = false
     }
     

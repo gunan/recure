@@ -15,7 +15,9 @@ struct ReminderCard: View {
             HStack() {
                 Label("\(reminder.startDate, format: .dateTime.month().day())", systemImage: "timer")
                 Spacer()
-                Label("\(reminder.nextAlertDate, format: .dateTime.month().day())", systemImage: "bell").padding(.trailing, 20)
+                if reminder.alertDates.count > 0 {
+                    Label("\(reminder.alertDates.first!, format: .dateTime.month().day())", systemImage: "bell").padding(.trailing, 20)
+                }
                 
             }.font(.caption)
             Text(reminder.description)
