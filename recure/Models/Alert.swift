@@ -12,6 +12,8 @@ struct Alert : Identifiable, Equatable, Codable {
     var reminder: Reminder
     var alertDate: Date
     var dismissed: Bool
+    var isVisible: Bool = false
+    var notificationIdentifier: String? = nil
     
     init(id: UUID = UUID(), reminder: Reminder) {
         self.id = id
