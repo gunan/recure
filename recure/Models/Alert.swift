@@ -12,7 +12,7 @@ struct Alert : Identifiable, Equatable, Codable {
     var id: UUID
     var reminder: Reminder
     var alertDate: Date
-    var dismissed: Bool
+    var dismissed: Bool = false
     var isVisible: Bool = false
     var notificationID: String? = nil
     
@@ -20,7 +20,12 @@ struct Alert : Identifiable, Equatable, Codable {
         self.id = id
         self.reminder = reminder
         self.alertDate = reminder.alertDates.first ?? reminder.startDate
-        self.dismissed = false
+    }
+    
+    init(id: UUID = UUID(), reminder: Reminder, alertDate: Date) {
+        self.id = id
+        self.reminder = reminder
+        self.alertDate = alertDate
     }
     
     public mutating func scheduleNotification() {

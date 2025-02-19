@@ -88,7 +88,7 @@ struct Reminder : Identifiable, Equatable, Codable {
         }
     }
     
-    public mutating func recalculateDueDates() {
+    public mutating func recalculateDueDates(alerts: inout [Alert]) {
         // In case we exhausted all reminders, let's still save the last one.
         var lastReminderDate: Date = self.alertDates.max() ?? self.startDate
         
@@ -119,14 +119,22 @@ struct Reminder : Identifiable, Equatable, Codable {
                     self.repeatCount! -= 1
                     // Let's still check if this is a valid date for a reminder.
                     if lastReminderDate > Date.now {
+                        var newAlert = Alert(reminder: self, alertDate: lastReminderDate)
+                        newAlert.scheduleNotification()
+                        alerts.append(newAlert)
                         self.alertDates.append(lastReminderDate)
+                        self.alertIDs.append(newAlert.id)
                     }
                 }
             } else if self.finalDate != nil {
                 while lastReminderDate < self.finalDate! && self.alertDates.count <= 30 {
                     lastReminderDate = Calendar.current.date(byAdding: self.cadence!.toDateComponents(), to: lastReminderDate)!
                     if lastReminderDate > Date.now {
+                        var newAlert = Alert(reminder: self, alertDate: lastReminderDate)
+                        newAlert.scheduleNotification()
+                        alerts.append(newAlert)
                         self.alertDates.append(lastReminderDate)
+                        self.alertIDs.append(newAlert.id)
                     }
                 }
             }
@@ -138,7 +146,7 @@ struct Reminder : Identifiable, Equatable, Codable {
         }
     }
     
-    public mutating func normalizeReminder() {
+    public mutating func normalizeReminder(alerts: inout [Alert]) {
         // Check validity of repetition variables.
         if self.isRepeating {
             // repeatCount is considered first
@@ -156,7 +164,7 @@ struct Reminder : Identifiable, Equatable, Codable {
         }
         
         // Then compute some amount of due dates.
-        self.recalculateDueDates()
+        self.recalculateDueDates(&alerts)
     }
     
     public mutating func clear(alerts: inout [Alert]) {

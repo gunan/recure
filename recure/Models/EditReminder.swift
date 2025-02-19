@@ -91,6 +91,7 @@ struct EditReminder : View {
                             if self.creatingNewReminder {
                                 reminders.append(editingReminder)
                             } else {
+                                reminder.clear(alerts: &alerts)
                                 reminder = editingReminder
                             }
                             dismiss()
