@@ -158,27 +158,6 @@ struct Reminder : Identifiable, Equatable, Codable {
         self.recalculateDueDates()
     }
     
-    public mutating func scheduleReminders() {
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [self.id.uuidString])
-        
-        // TODO move this to alert class.
-        self.alertDates.forEach { date in
-            let content = UNMutableNotificationContent()
-            content.title = self.title
-            content.body = self.description
-            
-            content.sound = UNNotificationSound.default
-            
-            let dateComps: DateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
-            
-            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComps, repeats: false)
-            
-            let request = UNNotificationRequest(identifier: self.id.uuidString, content: content, trigger: trigger)
-            
-            UNUserNotificationCenter.current().add(request)
-        }
-    }
-    
 }
 
 extension Reminder {
