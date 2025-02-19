@@ -85,7 +85,7 @@ struct EditReminder : View {
                             }
                         }
                         
-                        editingReminder.normalizeReminder()
+                        editingReminder.normalizeReminder(alerts: &alerts)
                         if editingReminder.isValid {
                             // Decide if we need to create a new reminder or editing an existing one.
                             if self.creatingNewReminder {
