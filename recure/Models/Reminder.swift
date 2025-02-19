@@ -164,7 +164,7 @@ struct Reminder : Identifiable, Equatable, Codable {
         }
         
         // Then compute some amount of due dates.
-        self.recalculateDueDates(&alerts)
+        self.recalculateDueDates(alerts: &alerts)
     }
     
     public mutating func clear(alerts: inout [Alert]) {
