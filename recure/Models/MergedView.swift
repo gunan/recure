@@ -21,7 +21,7 @@ struct MergedView: View {
                     .tabItem {
                         Label("Alerts", systemImage: "bell")
                     }
-                ReminderListView(reminders: $reminders)
+                ReminderListView(reminders: $reminders, alerts: $alerts)
                     .tabItem {
                         Label("Reminders", systemImage: "timer")
                     }

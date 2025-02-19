@@ -11,6 +11,8 @@ import SwiftUI
 struct EditReminder : View {
     @Binding var reminder: Reminder
     @Binding var reminders: [Reminder]
+    @Binding var alerts: [Alert]
+    
     @Environment(\.dismiss) private var dismiss
     @State private var editingReminder: Reminder
     private var creatingNewReminder: Bool
@@ -20,16 +22,18 @@ struct EditReminder : View {
     @State private var untilDate: Date = Date()
     @State private var repetitionCount: Int = 0
     
-    init(reminder: Binding<Reminder>) {
+    init(reminder: Binding<Reminder>, alerts: Binding<[Alert]>) {
         self._reminder = reminder
         self._editingReminder = State(initialValue: reminder.wrappedValue)
         self._reminders = .constant([])
+        self._alerts = alerts
         self.creatingNewReminder = false
     }
-    init(reminders: Binding<[Reminder]>) {
+    init(reminders: Binding<[Reminder]>, alerts: Binding<[Alert]>) {
         self._reminder = .constant(Reminder.emptyReminder)
         self._editingReminder = State(initialValue: Reminder.emptyReminder)
         self._reminders = reminders
+        self._alerts = alerts
         self.creatingNewReminder = true
     }
     
@@ -120,7 +124,8 @@ struct EditReminder_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             EditReminder(
-                reminder: .constant(Reminder.sampleData[0])
+                reminder: .constant(Reminder.sampleData[0]),
+                alerts: .constant(Alert.sampleData)
             )
         }
     }

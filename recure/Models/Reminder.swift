@@ -13,6 +13,7 @@ struct Reminder : Identifiable, Equatable, Codable {
     var title: String
     var startDate: Date
     var alertDates: [Date] = []
+    var alertIDs: [UUID] = []
     var description: String
     var theme: Theme
     var isValid: Bool = false
@@ -156,6 +157,17 @@ struct Reminder : Identifiable, Equatable, Codable {
         
         // Then compute some amount of due dates.
         self.recalculateDueDates()
+    }
+    
+    public mutating func clear(alerts: inout [Alert]) {
+        // First make sure we unschedule any notifications.
+        for var alert in alerts {
+            if self.alertIDs.contains(where: {alert.id == $0}) {
+                alert.clear()
+            }
+        }
+        
+        alerts.removeAll(where: {self.alertIDs.contains($0.id)})
     }
     
 }
