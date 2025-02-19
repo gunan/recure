@@ -23,9 +23,9 @@ struct Alert : Identifiable, Equatable, Codable {
         self.dismissed = false
     }
     
-    public mutating func scheduleReminders() -> String? {
+    public mutating func scheduleNotification() {
         let uuidString = UUID().uuidString
-        if self.notificationID != nil { return notificationID }
+        if self.notificationID != nil { return }
         
         let content = UNMutableNotificationContent()
         content.title = self.reminder.title
@@ -41,7 +41,7 @@ struct Alert : Identifiable, Equatable, Codable {
         
         UNUserNotificationCenter.current().add(request)
         self.notificationID = uuidString
-        return uuidString
+        return
     }
     
     public mutating func clear() {
