@@ -138,6 +138,21 @@ struct Reminder : Identifiable, Equatable, Codable {
                     }
                 }
             }
+        } else {
+            if self.alertDates.isEmpty || self.alertIDs.isEmpty {
+                // Let's make sure we get this reminder in a consistent state
+                if !self.alertIDs.isEmpty {
+                    self.clear(alerts: &alerts)
+                }
+                self.alertDates.removeAll()
+                
+                // Now we schedule a single reminder for this non-recurring event.
+                var newAlert = Alert(reminder: self, alertDate: lastReminderDate)
+                newAlert.scheduleNotification()
+                alerts.append(newAlert)
+                self.alertDates.append(lastReminderDate)
+                self.alertIDs.append(newAlert.id)
+            }
         }
         
         if self.alertDates.isEmpty {
