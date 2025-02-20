@@ -18,7 +18,9 @@ struct AlertListView: View {
         NavigationStack {
             List {
                 ForEach($alerts, id: \.id) { $alert in
-                    AlertCard(alert: alert)
+                    if alert.isVisible {
+                        AlertCard(alert: alert)
+                    }
                 }.onDelete(perform: removeRows)
             }
             .navigationTitle("Alerts")

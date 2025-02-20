@@ -40,5 +40,13 @@ class AlertStore: ObservableObject {
         }
         _ = try await task.value
     }
+    
+    public func refresh() {
+        for var alert in self.alerts where !alert.isVisible {
+            if alert.alertDate > Date.now {
+                alert.isVisible = true
+            }
+        }
+    }
 }
 

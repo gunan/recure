@@ -43,5 +43,8 @@ struct recureApp: App {
                 }
             }
         }
+        .backgroundTask(.appRefresh("Alert Refresh")) {
+            await alert_store.refresh()
+        }
     }
 }

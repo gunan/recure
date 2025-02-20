@@ -184,7 +184,7 @@ extension Reminder {
     static let sampleData: [Reminder] = [
         Reminder(title: "Take Medication",
                  startDate: Date(timeIntervalSinceNow: 0),
-                 nextAlertDate: Date(timeIntervalSinceNow: 100000),
+                 nextAlertDate: Date(timeIntervalSinceNow: -100000),
                  description: "Take 1 tablet aspirin",
                  theme: .yellow,
                  isRepeating: false
