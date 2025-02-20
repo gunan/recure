@@ -27,9 +27,6 @@ struct MergedView: View {
                     }
             }
         }
-        .onChange(of: scenePhase) { phase in
-            if phase == .inactive { saveAction() }
-        }
     }
 }
 
