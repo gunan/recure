@@ -17,10 +17,22 @@ struct Reminder : Identifiable, Equatable, Codable {
     var description: String
     var theme: Theme
     var isValid: Bool = false
-    var cadence: Cadence? = nil
-    var repeatCount: Int? = nil
-    var finalDate: Date? = nil
+    // repetition  stuff
     var isRepeating: Bool = false
+    var cadence: Cadence? = nil
+    var _repeatCount: Int? = nil
+    var repeatCount: Int?{
+        set { _repeatCount = newValue }
+        get { return _repeatCount }
+      }
+
+    var _finalDate: Date? = nil
+    var finalDate: Date? {
+        set { _finalDate = newValue }
+        get { return _finalDate }
+      }
+    
+    
     
     enum Cadence: String, CaseIterable, Identifiable, Codable {
         case Daily
@@ -86,6 +98,10 @@ struct Reminder : Identifiable, Equatable, Codable {
             self.repeatCount = reminder.repeatCount
             self.finalDate = reminder.finalDate
         }
+    }
+    
+    public mutating func resetValidity() {
+        self.isValid = true
     }
     
     public mutating func recalculateDueDates(alerts: inout [Alert]) {

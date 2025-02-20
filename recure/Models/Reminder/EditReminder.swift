@@ -52,7 +52,7 @@ struct EditReminder : View {
                     List {
                         Picker("Choose Reminder Cadence", selection: $editingReminder.cadence) {
                             ForEach(Reminder.Cadence.allCases) { c in
-                                Text(c.rawValue)
+                                Text(c.rawValue).tag(c)
                             }
                         }
                     }.disabled(!editingReminder.isRepeating)
@@ -76,6 +76,9 @@ struct EditReminder : View {
                 HStack {
                     Spacer()
                     Button("Done") {
+                        // Let's start by assuming the reminder is valid.
+                        editingReminder.resetValidity()
+                        
                         // Because of the optional business, resolve indirection here.
                         if (editingReminder.isRepeating) {
                             if selectRepetitionCount {
