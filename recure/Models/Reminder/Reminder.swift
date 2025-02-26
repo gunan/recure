@@ -246,7 +246,7 @@ extension Reminder {
                  startDate: Date.now,
                  nextAlertDate: Date.now,
                  description: "",
-                 theme: .sky,
+                 theme: .blue,
                  isRepeating: false)
     }
 }

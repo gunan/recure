@@ -24,6 +24,7 @@ struct ReminderCard: View {
         }
         .padding()
         .foregroundColor(reminder.theme.accentColor)
+        .background(reminder.theme.mainColor)
     }
 }
 
@@ -32,7 +33,5 @@ struct ReminderCard_Previews: PreviewProvider {
     static var reminder = Reminder.sampleData[0]
     static var previews: some View {
         ReminderCard(reminder: reminder)
-            // .background(reminder.theme.mainColor)
-            .background(reminder.theme.mainColor)
     }
 }
