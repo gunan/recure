@@ -13,6 +13,15 @@ struct ReminderListView: View {
     
     var body: some View {
         NavigationStack {
+            NavigationLink(destination: EditReminder(
+                reminders: $reminders,
+                alerts: $alerts
+            )) {
+                HStack {
+                    Image(systemName: "plus")
+                    Text("Add Reminder")
+                }
+            }
             List($reminders, id: \.title) { $reminder in
                 NavigationLink(destination: EditReminder(reminder: $reminder, alerts: $alerts)) {
                     ReminderCard(reminder: reminder)
@@ -20,15 +29,6 @@ struct ReminderListView: View {
                 .listRowBackground(reminder.theme.mainColor)
             }
             .navigationTitle("Reminders")
-            .toolbar {
-                NavigationLink(
-                    destination: EditReminder(
-                        reminders: $reminders,
-                        alerts: $alerts
-                    )) {
-                        Button("plus", systemImage: "plus", action: {})
-                    }
-            }
         }
     }
 }
